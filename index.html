@@ -14,16 +14,18 @@
 </head>
 
 <body onload="load()">
+  <h3>Select Kingdom Cards</h3>
   <form autocomplete="off" action="javascript:addCard()">
     <div class="autocomplete" style="width:300px;">
       <input id="cardInput" type="text" name="card" placeholder="Card">
     </div>
-    <input type="submit">
+    <!-- <input type="submit"> -->
   </form>
   <div id="table-container">
   <table id="table">
     <tr>
       <th>Card</th>
+      <th>Rank</th>
       <th>Synergies</th>
       <th>Antisynergies</th>
     </tr>

@@ -51,9 +51,10 @@ def get_card_html(url):
     
 def get_section(raw_html, section_title):
     near_start  = raw_html.find('title="Edit section: %s"' % section_title)
-    start1 = raw_html.find('<h2>', near_start-200, near_start)
-    start2 = raw_html.find('<h3>', near_start-200, near_start)
-    start = start1 if start1 > start2 else start2
+    start = raw_html.find('<ul>', near_start, near_start + 50)
+    # start1 = raw_html.find('<h2>', near_start-200, near_start)
+    # start2 = raw_html.find('<h3>', near_start-200, near_start)
+    # start = start1 if start1 > start2 else start2
     end1  = raw_html.find('<h2>', start + 5)
     end2  = raw_html.find('<h3>', start + 5)
     end = end1 if end1 < end2 and end1 != -1 else end2

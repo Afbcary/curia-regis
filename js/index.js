@@ -40,7 +40,8 @@ function autocomplete(inp, arr) {
         /*execute a function when someone clicks on the item value (DIV element):*/
         b.addEventListener("click", function (e) {
           /*insert the value for the autocomplete text field:*/
-          inp.value = this.getElementsByTagName("input")[0].value;
+          addCard(this.getElementsByTagName("input")[0].value)
+          inp.value = ''
           /*close the list of autocompleted values,
                 (or any other open lists of autocompleted values:*/
           closeAllLists();
@@ -71,6 +72,7 @@ function autocomplete(inp, arr) {
       e.preventDefault();
       if (currentFocus > -1) {
         /*and simulate a click on the "active" item:*/
+        // TODO REMOVE THIS addCard(x[currentFocus].children[1].value)
         if (x) x[currentFocus].click();
       }
     }
@@ -121,8 +123,9 @@ function compareRank(a, b) {
     return parseInt(a['rank']) < parseInt(b['rank']) ? -1 : 1;
 }
 
-function addCard() {
-    selected_card_names.push(document.getElementById("cardInput").value)
+function addCard(card_to_add) {
+    selected_card_names.push(card_to_add)
+    // selected_card_names.push(document.getElementById("cardInput").value)
     selected_cards = []
     for (card_name of selected_card_names){
         selected_cards.push(cards[card_name])
@@ -142,6 +145,7 @@ function addCard() {
     headerRow.appendChild(header3)
     headerRow.appendChild(header4)
     table = document.createElement('table')
+    table.id = 'table'
     table.appendChild(headerRow)
     for (selected_card of selected_cards) {
         dataRow = document.createElement('tr')
