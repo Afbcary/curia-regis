@@ -8,6 +8,5 @@ pip install requests
 pip install requests-HTML
 
 ## Ideas
-* Scrape cards in a game OR autocomplete enter into script
-* Show card rankings
-* Show card synergies. Map descriptions like 'village cards' to specific cards.
+* filterable kingdom card input
+* after 10 inputs, display table
