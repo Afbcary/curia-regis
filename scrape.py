@@ -5,7 +5,6 @@ from requests.exceptions import HTTPError
 from requests_html import HTMLSession
 import time
 
-
 class Card(dict):
     def __init__(self, name, rank, url):
         dict.__init__(self, name=name, rank=rank, url=url)
@@ -22,17 +21,6 @@ def get(url):
         print(e)
     
 def get_rank_cards():
-    # rankings_response = get('http://wiki.dominionstrategy.com/index.php/Qvist_Statistics')
-    # rankings_html = rankings_response.html
-    # rankings_html.render()
-    # # rows = rankings_html.xpath('//tr')
-    # # for row in rows:
-    # ranks = rankings_html.xpath('//tr/td[not(preceding-sibling::*)]')
-    # names = rankings_html.xpath('//tr/td[(count(preceding-sibling::*)+1) = 3]')
-    # cards = {}
-    # for i in range(0, len(ranks)):
-    #     cards[names[i].text] = Card(names[i].text, ranks[i].text, next(iter(names[i].absolute_links)))
-
     # CSV downloaded from content in 
     # https://docs.google.com/spreadsheets/d/1CaVOd1pgAgmjJHXPM1tVMVnlJOLDZaq8BxjW4I1NI1E/edit#gid=0
     with open('Dominion Card Glicko - Cards.csv', newline='') as csvfile:
@@ -51,10 +39,7 @@ def get_card_html(url):
     
 def get_section(raw_html, section_title):
     near_start  = raw_html.find('title="Edit section: %s"' % section_title)
-    start = raw_html.find('<ul>', near_start, near_start + 50)
-    # start1 = raw_html.find('<h2>', near_start-200, near_start)
-    # start2 = raw_html.find('<h3>', near_start-200, near_start)
-    # start = start1 if start1 > start2 else start2
+    start = raw_html.find('<ul>', near_start)
     end1  = raw_html.find('<h2>', start + 5)
     end2  = raw_html.find('<h3>', start + 5)
     end = end1 if end1 < end2 and end1 != -1 else end2
@@ -62,47 +47,17 @@ def get_section(raw_html, section_title):
     #TODO: character encoding bug
     section = section.replace('/images/thumb', 'http://wiki.dominionstrategy.com/images/thumb')
     section = section.replace('\\n', '')
+    section = section.replace('href=\\"/index.php/', 'http://wiki.dominionstrategy.com/index.php/')
     return section
-
-# https://stackoverflow.com/questions/5914627/prepend-line-to-beginning-of-a-file
-# def line_prepender(filename, line):
-#     with open(filename, 'r+') as f:
-#         content = f.read()
-#         f.seek(0, 0)
-#         f.write(line.rstrip('\r\n') + '\n' + content)
 
 cards = get_rank_cards()
 for card in cards.values():
     print('getting ' + card.name)
     time.sleep(0.5) # rate limit requests
     card_html = get_card_html(card.url)
-    card['strategy'] = get_section(card_html, 'Strategy Article')
     card['synergies'] = get_section(card_html, 'Synergies/Combos')
     card['antisynergies'] = get_section(card_html, 'Antisynergies')
+
 with open('cards.js', 'w') as outfile:
     outfile.write('cards = ')
     json.dump(cards, outfile)
-# line_prepender('cards.js', 'cards = ')
-#     print("""
-#     <!doctype html>
-
-# <html lang="en">
-# <head>
-#   <meta charset="utf-8">
-
-#   <title>Curia Regis</title>
-
-#   <link rel="stylesheet" href="css/styles.css?v=1.0">
-
-# </head>
-
-# <body>
-#     """)
-#     # print(card.strategy)
-#     print(card.synergies)
-#     print(card.antisynergies)
-#     print('</body></html>')
-#     raise Exception('Stop execution')
-
-# with open('cards.txt', 'w') as outfile:
-#     json.dump(cards, outfile)

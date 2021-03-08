@@ -1,9 +1,4 @@
-// function getCards() {
-//   fetch("./cards.json").then((response) => {
-//     return response.json();
-//   });
-// }
-
+// Slightly modified copied autocomplete
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
@@ -72,7 +67,6 @@ function autocomplete(inp, arr) {
       e.preventDefault();
       if (currentFocus > -1) {
         /*and simulate a click on the "active" item:*/
-        // TODO REMOVE THIS addCard(x[currentFocus].children[1].value)
         if (x) x[currentFocus].click();
       }
     }
@@ -109,63 +103,61 @@ function autocomplete(inp, arr) {
   });
 }
 
-selected_card_names = []
+selectedCardNames = []
 
 function load() {
-    const card_names = [];  
+    const cardNames = [];  
     Object.getOwnPropertyNames(cards).forEach(prop => {
-        card_names.push(prop);
+        cardNames.push(prop);
     });
-    autocomplete(document.getElementById("cardInput"), card_names);
+    autocomplete(document.getElementById("cardInput"), cardNames);
 }
 
 function compareRank(a, b) {
     return parseInt(a['rank']) < parseInt(b['rank']) ? -1 : 1;
 }
 
+function getHeader(text) {
+  header = document.createElement('th');
+  header.innerHTML = 'Card';
+  return header;
+}
+
+function getTd(text, html) {
+  td = document.createElement('td')
+  if (text != null) {
+    td.innerText = text
+  }
+  if (html != null) {
+    td.innerHTML = html
+  }
+  return td
+}
+
 function addCard(card_to_add) {
-    selected_card_names.push(card_to_add)
-    // selected_card_names.push(document.getElementById("cardInput").value)
-    selected_cards = []
-    for (card_name of selected_card_names){
-        selected_cards.push(cards[card_name])
+  selectedCardNames.push(card_to_add);
+    selectedCards = [];
+
+    for (card_name of selectedCardNames){
+      selectedCards.push(cards[card_name]);
     }
-    selected_cards = selected_cards.sort((a, b) => compareRank(a,b))
-    header1 = document.createElement('th')
-    header1.innerHTML = 'Card'
-    header2 = document.createElement('th')
-    header2.innerHTML = 'Rank'
-    header3 = document.createElement('th')
-    header3.innerHTML = 'Synergies'
-    header4 = document.createElement('th')
-    header4.innerHTML = 'Antisynergies'
-    headerRow = document.createElement('tr')
-    headerRow.appendChild(header1)
-    headerRow.appendChild(header2)
-    headerRow.appendChild(header3)
-    headerRow.appendChild(header4)
+    selectedCards = selectedCards.sort((a, b) => compareRank(a,b))
+    
     table = document.createElement('table')
     table.id = 'table'
+
+    headerRow = document.createElement('tr')
+    for (header of ['Card', 'Rank', 'Synergies', 'Antisynergies']) {
+      headerRow.appendChild(getHeader(header))
+    }
     table.appendChild(headerRow)
-    for (selected_card of selected_cards) {
+
+    for (selectedCard of selectedCards) {
         dataRow = document.createElement('tr')
-
-        nameTd = document.createElement('td')
-        nameTd.innerText = selected_card['name']
-        dataRow.appendChild(nameTd)
-
-        rankTd = document.createElement('td')
-        rankTd.innerText = selected_card['rank']
-        dataRow.appendChild(rankTd)
-      
-        synergiesTd = document.createElement('td')
-        synergiesTd.innerHTML = selected_card['synergies']
-        dataRow.appendChild(synergiesTd)
-
-        antisynergiesTd = document.createElement('td')
-        antisynergiesTd.innerHTML = selected_card['antisynergies']
-        dataRow.appendChild(antisynergiesTd)
-
+        dataRow.appendChild(getTd(selectedCard['name'], null))
+        dataRow.appendChild(getTd(selectedCard['rank'], null))
+        dataRow.appendChild(getTd(null, selectedCard['synergies']))
+        dataRow.appendChild(getTd(null, selectedCard['antisynergies']))
         table.appendChild(dataRow)
     }
 
