@@ -2,7 +2,7 @@
 
 A suite of tools to advise the king on Dominion gameplay. 
 
-Open index.html in your interweb explorer to access your personal counsel, my liege.
+Summon index.html in your interweb chariot to access your personal counsel, my liege.
 
 ## Development
 
