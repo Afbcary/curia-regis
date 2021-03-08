@@ -119,7 +119,7 @@ function compareRank(a, b) {
 
 function getHeader(text) {
   header = document.createElement('th');
-  header.innerHTML = 'Card';
+  header.innerHTML = text;
   return header;
 }
 
@@ -147,7 +147,7 @@ function addCard(card_to_add) {
     table.id = 'table'
 
     headerRow = document.createElement('tr')
-    for (header of ['Card', 'Rank', 'Synergies', 'Antisynergies']) {
+    for (const header of ['Card', 'Rank', 'Synergies', 'Antisynergies']) {
       headerRow.appendChild(getHeader(header))
     }
     table.appendChild(headerRow)
