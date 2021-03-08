@@ -47,6 +47,7 @@ def get_section(raw_html, section_title):
     #TODO: character encoding bug
     section = section.replace('/images/thumb', 'http://wiki.dominionstrategy.com/images/thumb')
     section = section.replace('\\n', '')
+    section = section.replace('\\t', '')
     section = section.replace('href=\\"/index.php/', 'http://wiki.dominionstrategy.com/index.php/')
     return section
 

@@ -2,9 +2,14 @@
 
 A suite of tools to advise the king on Dominion gameplay.
 
+Currently the rank data is a CSV download from [Dominion Card Glicko](https://docs.google.com/spreadsheets/d/1CaVOd1pgAgmjJHXPM1tVMVnlJOLDZaq8BxjW4I1NI1E/edit#gid=0). `Scrape.py` then looks up each card on [wiki.dominionstrategy.com](wiki.dominionstrategy.com) and snags the html for the synergies and antisynergies sections. Scrape finishes by writing the data to `cards.js` as a big JSON object. 
+
+A static site provides an easy lookup for the data during gameplay. 
+
 
 ## Development
 pip install requests
+
 pip install requests-HTML
 
 ## Ideas
@@ -14,3 +19,4 @@ pip install requests-HTML
 * chrome extension which loads page from current cards on dominion.games
 * write tests and QA test bad input
 * cron job to update every night
+* host site on github pages
