@@ -27,11 +27,12 @@ function autocomplete(inp, arr) {
       if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
         /*create a DIV element for each matching element:*/
         b = document.createElement("DIV");
+        /*html encode apostrophes*/
+        encoded = arr[i].replace("'", "&apos;")
         /*make the matching letters bold:*/
-        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-        b.innerHTML += arr[i].substr(val.length);
+        b.innerHTML = "<strong>" + encoded + "</strong>";
         /*insert a input field that will hold the current array item's value:*/
-        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+        b.innerHTML += "<input type='hidden' value='" + encoded + "'>";
         /*execute a function when someone clicks on the item value (DIV element):*/
         b.addEventListener("click", function (e) {
           /*insert the value for the autocomplete text field:*/
