@@ -124,13 +124,18 @@ function getHeader(text) {
   return header;
 }
 
-function getTd(text, html) {
+function getTd(text, html, card) {
   td = document.createElement('td')
   if (text != null) {
     td.innerText = text
   }
   if (html != null) {
-    td.innerHTML = html
+    if (html != ''){
+      html = html.replace('/', '\/')
+      td.innerHTML = html
+    } else {
+      td.innerHTML = `<li>You can improve the <a href=\"${card['url']}">wiki<\a> for ${card['name']}.</li>` 
+    }
   }
   return td
 }
@@ -157,8 +162,8 @@ function addCard(card_to_add) {
         dataRow = document.createElement('tr')
         dataRow.appendChild(getTd(selectedCard['name'], null))
         dataRow.appendChild(getTd(selectedCard['rank'], null))
-        dataRow.appendChild(getTd(null, selectedCard['synergies']))
-        dataRow.appendChild(getTd(null, selectedCard['antisynergies']))
+        dataRow.appendChild(getTd(null, selectedCard['synergies'], selectedCard))
+        dataRow.appendChild(getTd(null, selectedCard['antisynergies'], selectedCard))
         table.appendChild(dataRow)
     }
 

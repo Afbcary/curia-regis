@@ -42,7 +42,7 @@ def get_section(raw_html, html_id, backup_id):
     if near_start == -1 and backup_id:
         near_start  = raw_html.find('id="' + backup_id)
     if near_start == -1:
-        return 'No %s found.' % html_id
+        return ''
     start = raw_html.find('<ul>', near_start)
     end = raw_html.find('</ul>', near_start) + 5
     return clean(raw_html[start:end])
@@ -52,15 +52,15 @@ def clean(section):
     section = section.replace('\\n', '')
     section = section.replace('\\t', '')
     section = section.replace("\\'", "'")
-    section = section.replace('href=\"/index.php/', 'http://wiki.dominionstrategy.com/index.php/')
-    # TODO fix links like engine, Big Money
+    section = section.replace('href=\"/index.php/', 'href=\"http://wiki.dominionstrategy.com/index.php/')
     return section
 
 cards = get_rank_cards()
 for card in cards.values():
     print('getting ' + card.name)
     time.sleep(0.5) # rate limit requests
-    card_html = get_card_html('http://wiki.dominionstrategy.com/index.php/' + urllib.parse.quote_plus(card.name.replace(' ', '_')))
+    card['url'] = 'http://wiki.dominionstrategy.com/index.php/' + urllib.parse.quote_plus(card.name.replace(' ', '_'))
+    card_html = get_card_html(card['url'])
     card['synergies'] = get_section(card_html, 'Synergies', '')
     card['antisynergies'] = get_section(card_html, 'Anti-synergies', 'Antisynergies')
 
